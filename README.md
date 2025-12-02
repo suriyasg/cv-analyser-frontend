@@ -1,117 +1,74 @@
-# React TypeScript template with Vite
+# Frontend
 
-This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang.org/) boilerplate built with [Vite](https://vitejs.dev).
+A modern React application built with Vite, TypeScript, and HeroUI.
 
-## What's inside?
+## Tech Stack
 
-- [ReactJS](https://reactjs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org)
-- [Jest](https://jestjs.io)
-- [Testing Library](https://testing-library.com)
-- [Cypress](https://www.cypress.io)
-- [ESLint](https://eslint.org)
-- [Prettier](https://prettier.io)
-- [Polyfills](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#readme)
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite 7** - Build tool with HMR
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **HeroUI** - Component library
+- **Framer Motion** - Animation library
+- **React Compiler** - Automatic optimizations via Babel plugin
+- **Biome** - Linting and formatting
+- **Husky** - Git hooks
+- **lint-staged** - Run linters on staged files
 
-- [Axios](https://github.com/axios/axios)
-- [Zustand](https://github.com/pmndrs/zustand)
-- [React Query](https://tanstack.com/query/v4)
-- [React Router Dom](https://reactrouter.com/)
+## Getting Started
 
-## Getting started
+### Prerequisites
 
-1. Create the project.
+- Node.js (LTS version recommended)
+- Yarn
 
-   ```bash
-   npx degit ixdlabs/react-ts-vite-starter <app-name>
-   ```
-
-2. Access the project directory.
-
-   ```bash
-   cd <my-app>
-   ```
-
-3. Initialize a git repository.
-
-   ```bash
-   git init
-   ```
-
-4. Install dependencies.
-
-   ```bash
-   yarn
-   ```
-
-5. Start dev server with hot reload at http://localhost:3000.
-   ```bash
-   yarn dev
-   ```
-
-## Handling Environment varialbes
-
-```
-VITE_SOME_KEY=123
-DB_PASSWORD=foobar
-```
-
-Only VITE_SOME_KEY will be exposed as import.meta.env.VITE_SOME_KEY to your client source code, but DB_PASSWORD will not.
-
-```
-console.log(import.meta.env.VITE_SOME_KEY) // 123
-console.log(import.meta.env.DB_PASSWORD) // undefined
-```
-
-More information on [Vite Env Variables and Modes](https://vitejs.dev/guide/env-and-mode.html).
-
-## Recommended VS Code extensions
-
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-## Other commands
-
-### Lint commands
+### Installation
 
 ```bash
-yarn lint
+yarn install
 ```
 
-### Build commands
+### Development
+
+```bash
+yarn dev
+```
+
+### Build
 
 ```bash
 yarn build
 ```
 
-### Run the app in production mode at http://localhost:3000.
+### Preview Production Build
 
 ```bash
-yarn serve
+yarn preview
 ```
 
-### Test commands
+## Scripts
 
-- Run unit tests and watch
-  ```bash
-  yarn test:unit
-  ```
-- Run unit tests with coverage
-  ```bash
-  yarn test:unit:coverage
-  ```
-- Run e2e tests
-  ```bash
-  yarn test:e2e
-  ```
+| Script     | Description                         |
+| ---------- | ----------------------------------- |
+| `dev`      | Start development server            |
+| `build`    | Type check and build for production |
+| `preview`  | Preview production build            |
+| `lint`     | Run Biome linter                    |
+| `lint:fix` | Fix linting issues automatically    |
+| `prepare`  | Setup Husky git hooks               |
 
-### Commit commands
+## Code Quality
 
-```
-yarn commit
-```
+This project uses **Biome** for linting and formatting instead of ESLint/Prettier.
 
-## License
+### Biome Configuration
 
-This project is licensed under the MIT License.
+- Indent style: Tabs
+- Quote style: Double quotes
+- Auto-organize imports
+- Auto-sort attributes
+- Accessibility rules set to warn
+
+### Pre-commit Hooks
+
+Husky and lint-staged are configured to automatically lint and format staged files before each commit.

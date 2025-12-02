@@ -1,20 +1,16 @@
-import "./main.css";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HeroUIProvider } from "@heroui/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
-import { AppRoutes } from "@/routes/AppRoutes";
-
-const container = document.getElementById("root");
-const root = createRoot(container as HTMLDivElement);
-
-const queryClient = new QueryClient();
-
-root.render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AppRoutes />
-    </QueryClientProvider>
-  </StrictMode>
-);
+const rootElement = document.getElementById("root");
+if (rootElement) {
+	createRoot(rootElement).render(
+		<StrictMode>
+			<HeroUIProvider>
+				<RouterProvider router={router} />
+			</HeroUIProvider>
+		</StrictMode>,
+	);
+}
