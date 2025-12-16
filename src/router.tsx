@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Dashboard from "./pages/dashboard/dashboard";
 import { HomePage } from "./pages/home/home-page";
 import { LoginPage } from "./pages/login/login-page";
 import { IsLoggedInGuard, IsLoggedOutGuard } from "./util/guards";
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <HomePage />,
+			},
+			{
+				path: "/dashboard",
+				element: <Dashboard />,
 			},
 		],
 	},
