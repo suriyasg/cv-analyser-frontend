@@ -77,8 +77,11 @@ function NewScan() {
 					placeholder="Enter your target job description"
 				/>
 			</div>
-			<div className="w-full p-6" id="submit">
-				<Button className="bg-blue-500 text-white" onPress={onPress}>
+			<div className="w-full p-6 flex flex-row-reverse" id="submit">
+				<Button
+					className="bg-white text-blue hover:bg-blue-400 hover:text-white border-2 border-blue-500 font-extrabold hover:shadow-2xl"
+					onPress={onPress}
+				>
 					Start Scanning
 				</Button>
 			</div>

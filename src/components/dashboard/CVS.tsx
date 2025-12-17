@@ -1,6 +1,8 @@
+import { useDisclosure } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "@/util/api";
+import AddScanModal from "./AddScanModal";
 
 interface CVWithScans {
 	id: number;
@@ -27,11 +29,14 @@ interface CVSProps {
 
 function CVS({ setScanId, setActive }: CVSProps) {
 	const [cvs, setCVs] = useState<CVWithScans[]>([]);
+	const [addScanCVId, setAddScanCVId] = useState<number>();
+	const [addScanCVTitle, setAddScanCVTitle] = useState<string>();
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	useEffect(() => {
 		api
 			.get("/cvs/")
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				setCVs(response.data);
 			})
 			.catch((error) => {
@@ -40,6 +45,12 @@ function CVS({ setScanId, setActive }: CVSProps) {
 	}, []);
 	return (
 		<div className="w-full p-2">
+			<AddScanModal
+				cv_id={addScanCVId}
+				cv_title={addScanCVTitle}
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+			/>
 			<div className="p-6" id="header">
 				<h1 className="text-black dark:text-white text-3xl lg:text-2xl font-black leading-tight tracking-[-0.033em]">
 					CV Scans
@@ -52,8 +63,8 @@ function CVS({ setScanId, setActive }: CVSProps) {
 				{cvs.map((cv, index) => {
 					return (
 						<div className="flex flex-col p-2" key={cv.id}>
-							<div className="w-full flex flex-row border-b-2 border-black mb-2">
-								<div className="w-3/4 font-extrabold">{cv.title}</div>
+							<div className="w-full flex flex-row border-b-1 p-2 border-black mb-6">
+								<div className="w-2/4 font-extrabold">{cv.title}</div>
 								<div className="w-1/4 text-end pr-2">
 									<Link
 										className="italic text-blue-500 underline hover:text-blue-700"
@@ -62,6 +73,34 @@ function CVS({ setScanId, setActive }: CVSProps) {
 									>
 										View CV
 									</Link>
+								</div>
+								<div className="w-1/4 text-end">
+									<button
+										className="rounded-md text-white p-1 hover:bg-gray-200"
+										onClick={() => {
+											setAddScanCVId(cv.id);
+											setAddScanCVTitle(cv.title);
+											onOpen();
+										}}
+										title="Add new scan"
+										type="button"
+									>
+										<svg
+											className="size-6 text-black"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth={1.5}
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<title>add new scan</title>
+											<path
+												d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											/>
+										</svg>
+									</button>
 								</div>
 							</div>
 
@@ -78,7 +117,9 @@ function CVS({ setScanId, setActive }: CVSProps) {
 												key={scan.id}
 											>
 												<div className="w-1/5 ">
-													<span className="bg-amber-300 rounded-lg text-center text-xs p-2">
+													<span
+														className={`rounded-lg text-center text-xs p-2 ${getScanStatusColour(scan.scan_status)}`}
+													>
 														{scan.scan_status}
 													</span>
 												</div>
@@ -108,6 +149,24 @@ function CVS({ setScanId, setActive }: CVSProps) {
 			</div>
 		</div>
 	);
+}
+
+function getScanStatusColour(status: string): string {
+	switch (status) {
+		case "PENDING":
+			return "bg-red-300";
+		case "STARTED":
+			return "bg-amber-300";
+		case "PROCESSING":
+			return "bg-blue-300";
+		case "FINISHED":
+			return "bg-green-300";
+		case "COMPLETED":
+			return "bg-green-300";
+
+		default:
+			return "";
+	}
 }
 
 export default CVS;

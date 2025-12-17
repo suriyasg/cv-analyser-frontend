@@ -1,97 +1,262 @@
+import { id } from "zod/locales";
 import type { CV, CVScan } from "./components/dashboard/ScanResults";
 
 export const dummyCV: CV = {
-	id: 2,
+	id: 1,
 	title: "Senior Backend Developer CV",
 	file: "/media/uploads/senior_backend_dev.pdf",
-	owner_id: 7,
+	owner_id: 1,
 	created: new Date("2024-11-01T10:15:00Z"),
 	modified: new Date("2024-11-15T08:30:00Z"),
-	cvscan_set: [7],
+	scans: [
+		{
+			id: 1,
+			scan_status: "FINISHED",
+			created: new Date("2024-11-01T10:15:00Z"),
+		},
+		{
+			id: 2,
+			scan_status: "FINISHED",
+			created: new Date("2024-11-01T10:15:00Z"),
+		},
+	],
 };
 
-export const dummyCVScan: CVScan = {
-	id: 11,
-	job_description: `
-Build and maintain web applications using Python and the Django framework.
-Design and implement backend logic, database models, and user profile systems for community and contributor-focused functionality.
-Implement mailing list and newsletter systems that help users stay connected with community activity.
-Collaborate with external partners.
-Build systems that recognise contributors through profile features and participation tracking, including GitHub and other 3rd party APIs.
-Ensure all code is maintainable, secure, and aligned with best Django practices.
+export const dummyCVScans: CVScan[] = [
+	{
+		id: 1,
 
-Restrictions
-- No telecommuting
-- No agencies
+		cv: dummyCV,
 
-Requirements
-- US resident with full right to work status
-- Strong proficiency in Python
-- Minimum of 5 years experience with Django (ORM, models, views, templates)
-- Experience with relational databases (PostgreSQL or MySQL)
-- Frontend familiarity with HTML and CSS
-- Experience with lower-level languages is a bonus
-- Comfortable working independently in a remote US-based environment
+		job_description: `
+## Backend Developer – Python & Django
 
-About the Company
-- Competitive salary: $120,000 – $150,000
-- Health insurance allowance
-- Fully remote (US residents only)
-- Flexible working hours
-- Opportunity to work on open-source and community-focused projects
+We are looking for a **Backend Developer** to design, build, and maintain scalable web applications using **Python** and the **Django framework**.
 
-Contact Info
-- Contact: Jon Gould
-- Email: hello@foxleytalent.com
-- Web: https://foxleytalent.com/jobs/django-developer-usa/
-`,
-	scan_status: "completed",
-	scan_result: `
-# CV Soft Skills Analysis
+### Responsibilities
+- Develop and maintain backend services using **Django** and **Django REST Framework**
+- Design and optimize **database models** and backend business logic
+- Build and integrate **REST APIs** for frontend and third-party services
+- Work with authentication, user profiles, and role-based access control
+- Collaborate with frontend developers, product teams, and external partners
+- Write clean, maintainable, and well-tested code following best practices
 
-To analyze how well a CV demonstrates the required soft skills, the following structured approach can be used:
+### Requirements
+- Strong proficiency in **Python** and **Django**
+- Experience with relational databases (PostgreSQL / MySQL)
+- Familiarity with RESTful API design
+- Basic understanding of version control systems (Git / GitHub)
+- Ability to analyze problems and deliver reliable backend solutions
 
----
+### Nice to Have
+- Experience with **Django REST Framework**
+- Exposure to background task processing (Celery / Redis)
+- Knowledge of third-party API integrations`,
+		scan_status: "STARTED",
 
-## 1. Identify the Required Hard Skills
+		// Text outputs
+		scan_result:
+			"Strong backend-focused profile with solid Python and Django experience, supported by good problem-solving and collaborative skills.",
 
-The person to whom the candidate reports agrees that:
+		anonymized_cv_text: "",
+		preprocessed_cv_text: "",
 
-- Their contribution to **architecture** and **feature velocity** proceeds at a competitive pace.
-- Their **code quality** is on par with top-tier Python developments.
+		// Skills
+		identified_hard_skills: {
+			extraction_reasoning: "Like I would know",
+			found_hard_skills: [
+				"Python",
+				"Django",
+				"Backend Logic",
+				"Database Models",
+			],
+		},
 
----
+		identified_soft_skills: {
+			extraction_reasoning: "Like I would know",
+			found_soft_skills: [
+				"Problem Solving",
+				"Analytical Thinking",
+				"Attention to Detail",
+				"Collaboration",
+				"Communication",
+				"Adaptability",
+				"Ownership and Accountability",
+				"Time Management",
+			],
+		},
 
-## 2. Analyze the Code Snippet
+		hard_skill_analyser_output: {
+			found_hard_skills: [
+				"Python",
+				"Django",
+				"Backend Logic",
+				"Database Models",
+			],
+			missing_hard_skills: ["React"],
+			match_score: 90,
+			summary:
+				"The CV strongly matches the required backend hard skills, particularly in Python, Django, and backend system design.",
+		},
 
-The following code snippet demonstrates the implementation of a secure design in Python using:
+		soft_skill_analyser_output: {
+			found_soft_skills: [
+				"Problem Solving",
+				"Analytical Thinking",
+				"Attention to Detail",
+				"Collaboration",
+				"Communication",
+				"Adaptability",
+				"Ownership and Accountability",
+				"Time Management",
+			],
+			missing_soft_skills: [
+				"Leadership",
+				"Mentoring",
+				"Stakeholder Communication",
+				"Cross-team Collaboration",
+			],
+			match_score: 65,
+			summary:
+				"The CV demonstrates solid core soft skills such as problem-solving, analytical thinking, and teamwork. However, leadership, mentoring, and cross-team communication are not clearly evidenced.",
+		},
 
-- The \`random\` module, which provides a random number generator that can be used to generate unique passwords for authentication.
-- The \`git\` library, which provides a Git module that allows you to perform various tasks such as code completion and repository interactions.
+		summary_generator_output: {
+			overall_match: 60,
+			strengths: [
+				"Strong Python and Django expertise",
+				"Well-structured backend logic",
+				"Experience with database-driven systems",
+				"Good problem-solving and analytical approach",
+			],
+			weaknesses: [
+				"Limited evidence of leadership or mentoring experience",
+				"Soft skills are mostly implicit rather than explicitly demonstrated",
+			],
+			recommendations: [
+				"Highlight leadership or mentoring responsibilities if applicable",
+				"Add examples of cross-team or stakeholder collaboration",
+			],
+			final_summary:
+				"A **technically strong** backend-focused CV with solid Python and Django expertise, complemented by reliable problem-solving and collaboration skills, *though* **leadership** and **broader communication experience** could be more clearly demonstrated.",
+		},
+	},
+	{
+		id: 2,
 
-This code reflects practices where code quality aligns with top-tier Python development standards.
+		cv: dummyCV,
 
----
+		job_description: `
+## Backend Developer – Python & Django
 
-## 3. Evaluate the Code Snippet (Technical Proficiency)
+We are looking for a **Backend Developer** to design, build, and maintain scalable web applications using **Python** and the **Django framework**.
 
-The person who reports has demonstrated:
+### Responsibilities
+- Develop and maintain backend services using **Django** and **Django REST Framework**
+- Design and optimize **database models** and backend business logic
+- Build and integrate **REST APIs** for frontend and third-party services
+- Work with authentication, user profiles, and role-based access control
+- Collaborate with frontend developers, product teams, and external partners
+- Write clean, maintainable, and well-tested code following best practices
 
-- High proficiency in one or more required hard skills.
-- A contribution to architecture and feature velocity that proceeds at a competitive pace.
-- Code quality that is on par with top-tier Python developments.
+### Requirements
+- Strong proficiency in **Python** and **Django**
+- Experience with relational databases (PostgreSQL / MySQL)
+- Familiarity with RESTful API design
+- Basic understanding of version control systems (Git / GitHub)
+- Ability to analyze problems and deliver reliable backend solutions
 
-This highlights that evaluating **multiple hard skills** is important when assessing a candidate's overall value.
+### Nice to Have
+- Experience with **Django REST Framework**
+- Exposure to background task processing (Celery / Redis)
+- Knowledge of third-party API integrations`,
+		scan_status: "STARTED",
 
----
+		// Text outputs
+		scan_result:
+			"Strong backend-focused profile with solid Python and Django experience, supported by good problem-solving and collaborative skills.",
 
-## 8. Final Observation
+		anonymized_cv_text: "",
+		preprocessed_cv_text: "",
 
-Repeated assessments of company fit and contribution levels suggest that while velocity and architectural impact matter, **technical expertise and code quality** remain critical indicators of a candidate’s long-term value.
-`,
-	overall_match: 60,
-	hard_skill_match: 90,
-	soft_skill_match: 30,
-	experience_level: "Senior",
-	cv: dummyCV,
-};
+		// Skills
+		identified_hard_skills: {
+			extraction_reasoning: "Like I would ever know",
+			found_hard_skills: [
+				"Python",
+				"Django",
+				"Backend Logic",
+				"Database Models",
+			],
+		},
+
+		identified_soft_skills: {
+			extraction_reasoning: "Like I would ever know",
+			found_soft_skills: [
+				"Problem Solving",
+				"Analytical Thinking",
+				"Attention to Detail",
+				"Collaboration",
+				"Communication",
+				"Adaptability",
+				"Ownership and Accountability",
+				"Time Management",
+			],
+		},
+
+		hard_skill_analyser_output: {
+			found_hard_skills: [
+				"Python",
+				"Django",
+				"Backend Logic",
+				"Database Models",
+			],
+			missing_hard_skills: ["React"],
+			match_score: 50,
+			summary:
+				"The CV strongly matches the required backend hard skills, particularly in Python, Django, and backend system design.",
+		},
+
+		soft_skill_analyser_output: {
+			found_soft_skills: [
+				"Problem Solving",
+				"Analytical Thinking",
+				"Attention to Detail",
+				"Collaboration",
+				"Communication",
+				"Adaptability",
+				"Ownership and Accountability",
+				"Time Management",
+			],
+			missing_soft_skills: [
+				"Leadership",
+				"Mentoring",
+				"Stakeholder Communication",
+				"Cross-team Collaboration",
+			],
+			match_score: 55,
+			summary:
+				"The CV demonstrates solid core soft skills such as problem-solving, analytical thinking, and teamwork. However, leadership, mentoring, and cross-team communication are not clearly evidenced.",
+		},
+
+		summary_generator_output: {
+			overall_match: 50,
+			strengths: [
+				"Strong Python and Django expertise",
+				"Well-structured backend logic",
+				"Experience with database-driven systems",
+				"Good problem-solving and analytical approach",
+			],
+			weaknesses: [
+				"Limited evidence of leadership or mentoring experience",
+				"Soft skills are mostly implicit rather than explicitly demonstrated",
+			],
+			recommendations: [
+				"Highlight leadership or mentoring responsibilities if applicable",
+				"Add examples of cross-team or stakeholder collaboration",
+			],
+			final_summary:
+				"A **technically strong** backend-focused CV with solid Python and Django expertise, complemented by reliable problem-solving and collaboration skills, *though* **leadership** and **broader communication experience** could be more clearly demonstrated.",
+		},
+	},
+];
