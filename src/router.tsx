@@ -12,15 +12,15 @@ export const router = createBrowserRouter([
 				path: "/auth/login",
 				element: <LoginPage />,
 			},
+			{
+				path: "/",
+				element: <HomePage />,
+			},
 		],
 	},
 	{
 		element: <IsLoggedInGuard />,
 		children: [
-			{
-				path: "/",
-				element: <HomePage />,
-			},
 			{
 				path: "/dashboard",
 				element: <Dashboard />,
