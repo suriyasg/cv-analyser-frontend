@@ -5,8 +5,15 @@ import { useState } from "react";
 import { api } from "@/util/api";
 import FileInput from "./FileInput";
 
-function NewScan() {
+interface NewScanProps {
+	setActive: React.Dispatch<
+		React.SetStateAction<"NewScan" | "CVSCANS" | "ScanResults">
+	>;
+}
+
+function NewScan({ setActive }: NewScanProps) {
 	const [title, setTitle] = useState<string>("");
+	const [scanTitle, setScanTitle] = useState<string>("");
 	const [file, setFile] = useState<File | undefined>(undefined);
 	const [jobDes, setJobDes] = useState<string>("");
 
@@ -19,9 +26,10 @@ function NewScan() {
 
 	const onPress = () => {
 		const formdata = new FormData();
-		if (!file || !jobDes || !title) return;
+		if (!file || !jobDes || !title || !scanTitle) return;
 
 		formdata.append("title", title);
+		formdata.append("scan_title", scanTitle);
 		formdata.append("file", file);
 		formdata.append("job_description", jobDes);
 		console.log(title);
@@ -35,6 +43,9 @@ function NewScan() {
 			})
 			.then((response) => {
 				console.log(response);
+				if (response.status === 201) {
+					setActive("CVSCANS");
+				}
 			})
 			.catch((error) => {
 				console.log(error);
@@ -54,9 +65,18 @@ function NewScan() {
 			</div>
 			<div className="w-full p-6" id="title">
 				<Input
-					label="Title"
+					label="Cv Title"
 					onChange={(event) => {
 						setTitle(event.target.value);
+					}}
+					type="text"
+				/>
+			</div>
+			<div className="w-full p-6" id="scan-title">
+				<Input
+					label="Scan Title"
+					onChange={(event) => {
+						setScanTitle(event.target.value);
 					}}
 					type="text"
 				/>
