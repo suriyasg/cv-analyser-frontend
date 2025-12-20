@@ -1,11 +1,14 @@
 import { Button } from "@heroui/react";
 import { useState } from "react";
-import { z } from "zod";
+import { email, z } from "zod";
 import loginBg from "@/assets/login-bg.jpg";
+import { api } from "@/util/api";
+import { useAuth, useAuthStore } from "@/util/auth";
 import { useAppForm } from "@/util/form";
 
 const loginSchema = z.object({
 	email: z.email({ message: "Please enter a valid email address" }),
+	username: z.string({ message: "Please enter a valid username" }),
 	password: z.string().min(1, { message: "Password is required" }),
 });
 
@@ -14,10 +17,12 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export const LoginPage = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const toggleVisibility = () => setIsVisible(!isVisible);
+	// const setAuth = useAuth.use.setAuth();
 
 	const form = useAppForm({
 		defaultValues: {
 			email: "",
+			username: "",
 			password: "",
 		} as LoginFormData,
 		validators: {
@@ -25,6 +30,20 @@ export const LoginPage = () => {
 		},
 		onSubmit: async ({ value }) => {
 			// TODO: Implement login logic
+			api
+				.post("/api/v1/cvowner/auth/login/", {
+					email: value.email,
+					username: value.username,
+					password: value.password,
+				})
+				.then((response) => {
+					console.log(response);
+					// setAuth(response.data.access);
+					useAuthStore.getState().setAuth(response.data.access);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 			console.log("Form submitted:", value);
 		},
 	});
@@ -70,6 +89,15 @@ export const LoginPage = () => {
 									label="Email"
 									placeholder="Eg: johndoe@exampple.com"
 									type="email"
+								/>
+							)}
+						</form.AppField>
+						<form.AppField name="username">
+							{(field) => (
+								<field.InputField
+									label="Username"
+									placeholder="Eg: johndoe"
+									type="text"
 								/>
 							)}
 						</form.AppField>
