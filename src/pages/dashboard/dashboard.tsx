@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import CVS from "@/components/dashboard/CVS";
 import NewScan from "@/components/dashboard/NewScan";
 import ScanResults from "@/components/dashboard/ScanResults";
@@ -10,18 +11,35 @@ function Dashboard() {
 	);
 
 	const [scanId, setScanId] = useState<number | undefined>();
+	const [searchParams] = useSearchParams();
+	const currentTab = searchParams.get("currentTab");
+	const currentTabEnum = getCurrentTab(currentTab);
 	return (
 		<div className="flex flex-row h-full w-full p-2">
-			<Sidebar active={active} setActive={setActive} />
-			{active === "NewScan" && <NewScan />}
-			{active === "CVSCANS" && (
-				<CVS setActive={setActive} setScanId={setScanId} />
-			)}
-			{active === "ScanResults" && (
+			<Sidebar active={currentTabEnum} />
+			{currentTabEnum === "NewScan" && <NewScan setActive={setActive} />}
+			{currentTabEnum === "CVSCANS" && <CVS setScanId={setScanId} />}
+			{currentTabEnum === "ScanResults" && (
 				<ScanResults scanId={scanId} setScanId={setScanId} />
 			)}
 		</div>
 	);
+}
+
+function getCurrentTab(
+	string: string | null,
+): "NewScan" | "CVSCANS" | "ScanResults" {
+	switch (string) {
+		case "NewScan":
+			return "NewScan";
+		case "CVSCANS":
+			return "CVSCANS";
+		case "ScanResults":
+			return "ScanResults";
+
+		default:
+			return "NewScan";
+	}
 }
 
 export default Dashboard;
