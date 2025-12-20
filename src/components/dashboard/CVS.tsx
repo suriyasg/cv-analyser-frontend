@@ -78,7 +78,9 @@ function CVS({ setScanId, setActive }: CVSProps) {
 												key={scan.id}
 											>
 												<div className="w-1/5 ">
-													<span className="bg-amber-300 rounded-lg text-center text-xs p-2">
+													<span
+														className={`rounded-lg text-center text-xs p-2 ${getScanStatusColour(scan.scan_status)}`}
+													>
 														{scan.scan_status}
 													</span>
 												</div>
@@ -108,6 +110,24 @@ function CVS({ setScanId, setActive }: CVSProps) {
 			</div>
 		</div>
 	);
+}
+
+function getScanStatusColour(status: string): string {
+	switch (status) {
+		case "PENDING":
+			return "bg-red-300";
+		case "STARTED":
+			return "bg-amber-300";
+		case "PROCESSING":
+			return "bg-blue-300";
+		case "FINISHED":
+			return "bg-green-300";
+		case "COMPLETED":
+			return "bg-green-300";
+
+		default:
+			return "";
+	}
 }
 
 export default CVS;
