@@ -29,7 +29,6 @@ export const LoginPage = () => {
 			onChange: loginSchema,
 		},
 		onSubmit: async ({ value }) => {
-			// TODO: Implement login logic
 			api
 				.post("/api/v1/cvowner/auth/login/", {
 					email: value.email,
@@ -37,14 +36,13 @@ export const LoginPage = () => {
 					password: value.password,
 				})
 				.then((response) => {
-					console.log(response);
 					// setAuth(response.data.access);
 					useAuthStore.getState().setAuth(response.data.access);
+					useAuthStore.getState().setRefresh(response.data.refresh);
 				})
 				.catch((error) => {
 					console.log(error);
 				});
-			console.log("Form submitted:", value);
 		},
 	});
 
