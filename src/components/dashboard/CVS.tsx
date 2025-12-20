@@ -1,6 +1,7 @@
-import { useDisclosure } from "@heroui/react";
+import { Button, useDisclosure } from "@heroui/react";
+import { Select, SelectItem } from "@heroui/select";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "@/util/api";
 import AddScanModal from "./AddScanModal";
 
@@ -16,33 +17,53 @@ interface CVWithScans {
 
 interface partialScan {
 	id: number;
+	title: string;
 	created: Date;
 	scan_status: string;
 }
 
 interface CVSProps {
 	setScanId: React.Dispatch<React.SetStateAction<number | undefined>>;
-	setActive: React.Dispatch<
-		React.SetStateAction<"NewScan" | "CVSCANS" | "ScanResults">
-	>;
 }
 
-function CVS({ setScanId, setActive }: CVSProps) {
+const pageSizes = [
+	{ key: 1, label: "1" },
+	{ key: 2, label: "2" },
+	{ key: 3, label: "3" },
+	{ key: 4, label: "4" },
+];
+
+function CVS({ setScanId }: CVSProps) {
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [cvs, setCVs] = useState<CVWithScans[]>([]);
 	const [addScanCVId, setAddScanCVId] = useState<number>();
+	const [pageSize, SetPageSize] = useState<string>("1");
+	const [next, setNext] = useState<boolean>(true);
+	const [previous, setPrevious] = useState<boolean>(false);
+
 	const [addScanCVTitle, setAddScanCVTitle] = useState<string>();
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	useEffect(() => {
+		let url = "/cvs/";
+		const page = searchParams.get("page") || "1";
+		if (page) {
+			url = `${url}?page=${page}`;
+		}
+		if (pageSize) {
+			url = `${url}&page_size=${pageSize}`;
+		}
 		api
-			.get("/cvs/")
+			.get(url)
 			.then((response) => {
 				// console.log(response.data);
-				setCVs(response.data);
+				setCVs(response.data.results);
+				setNext(!!response.data.next);
+				setPrevious(!!response.data.previous);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}, [searchParams, pageSize]);
 	return (
 		<div className="w-full p-2">
 			<AddScanModal
@@ -60,21 +81,39 @@ function CVS({ setScanId, setActive }: CVSProps) {
 				</p>
 			</div>
 			<div>
-				{cvs.map((cv, index) => {
+				{cvs.map((cv) => {
 					return (
 						<div className="flex flex-col p-2" key={cv.id}>
 							<div className="w-full flex flex-row border-b-1 p-2 border-black mb-6">
-								<div className="w-2/4 font-extrabold">{cv.title}</div>
-								<div className="w-1/4 text-end pr-2">
+								<div className="w-14/16 font-extrabold">{cv.title}</div>
+								<div className="w-1/16 flex justify-end pr-2">
 									<Link
 										className="italic text-blue-500 underline hover:text-blue-700"
 										target="_blank"
 										to={{ pathname: cv.file }}
 									>
-										View CV
+										<svg
+											aria-hidden="true"
+											className="icon"
+											fill="none"
+											focusable="false"
+											height="24"
+											stroke="currentColor"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											viewBox="0 0 24 24"
+											width="24"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+											<path d="M15 3h6v6"></path>
+											<path d="M10 14L21 3"></path>
+											<title>View CV</title>
+										</svg>
 									</Link>
 								</div>
-								<div className="w-1/4 text-end">
+								<div className="w-1/16 text-end">
 									<button
 										className="rounded-md text-white p-1 hover:bg-gray-200"
 										onClick={() => {
@@ -116,14 +155,15 @@ function CVS({ setScanId, setActive }: CVSProps) {
 												className="w-full flex flex-row items-center border-1 border-gray-300 rounded-lg m-1 p-2"
 												key={scan.id}
 											>
-												<div className="w-1/5 ">
+												<div className="w-2/5 font-semibold">{scan.title}</div>
+												<div className="w-1/5">
 													<span
-														className={`rounded-lg text-center text-xs p-2 ${getScanStatusColour(scan.scan_status)}`}
+														className={`rounded-lg text-center text-xs p-1 ${getScanStatusColour(scan.scan_status)}`}
 													>
 														{scan.scan_status}
 													</span>
 												</div>
-												<div className="w-3/5 text-center italic text-gray-400">
+												<div className="w-1/5 text-center italic text-small text-gray-400">
 													{String(scan.created)}
 												</div>
 												<div className="w-1/5 flex justify-end">
@@ -131,7 +171,10 @@ function CVS({ setScanId, setActive }: CVSProps) {
 														className="p-1 bg-blue-400 rounded-md text-white hover:bg-blue-700"
 														onClick={() => {
 															setScanId(scan.id);
-															setActive("ScanResults");
+															setSearchParams({
+																...searchParams,
+																currentTab: "ScanResults",
+															});
 														}}
 														type="button"
 													>
@@ -146,6 +189,52 @@ function CVS({ setScanId, setActive }: CVSProps) {
 						</div>
 					);
 				})}
+			</div>
+			<div id="pagination">
+				<Button
+					className={`p-1 m-2 ${!previous ? "cursor-not-allowed" : ""}`}
+					disabled={!previous}
+					onPress={() => {
+						const currentPage = searchParams.get("page")
+							? Number(searchParams.get("page"))
+							: 0;
+						setSearchParams({
+							...searchParams,
+							currentTab: "CVSCANS",
+							page: String(currentPage - 1),
+						});
+					}}
+				>
+					Previous
+				</Button>
+				<Button
+					className={`p-1 m-2 ${!next ? "cursor-not-allowed" : ""}`}
+					disabled={!next}
+					onPress={() => {
+						const currentPage = searchParams.get("page")
+							? Number(searchParams.get("page"))
+							: 0;
+						setSearchParams({
+							...searchParams,
+							currentTab: "CVSCANS",
+							page: String(currentPage + 1),
+						});
+					}}
+				>
+					Next
+				</Button>
+				<Select
+					className="max-w-xs"
+					label="Page size"
+					onChange={(event) => {
+						SetPageSize(event.target.value);
+					}}
+					placeholder="Select page size"
+				>
+					{pageSizes.map((page) => (
+						<SelectItem key={page.key}>{page.label}</SelectItem>
+					))}
+				</Select>
 			</div>
 		</div>
 	);

@@ -1,14 +1,13 @@
 import { Button } from "@heroui/react";
+import { useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/util/auth";
 
 interface SidebarProps {
 	active: "NewScan" | "CVSCANS" | "ScanResults";
-	setActive: React.Dispatch<
-		React.SetStateAction<"NewScan" | "CVSCANS" | "ScanResults">
-	>;
 }
 
-function Sidebar({ active, setActive }: SidebarProps) {
+function Sidebar({ active }: SidebarProps) {
+	const [searchParams, setSearchParams] = useSearchParams();
 	return (
 		<div className="bg-gray-50 w-1/6 h-screen overflow-y-auto flex flex-col pr-2">
 			<div className="mb-6" id="header">
@@ -19,7 +18,9 @@ function Sidebar({ active, setActive }: SidebarProps) {
 			<div className="p-1" id="selector-btns">
 				<button
 					className={`w-full hover:bg-blue-100 rounded-md mb-1 flex flex-row p-2 ${active === "NewScan" ? "bg-blue-100" : ""}`}
-					onClick={() => setActive("NewScan")}
+					onClick={() =>
+						setSearchParams({ ...searchParams, currentTab: "NewScan" })
+					}
 					type="button"
 				>
 					<div className="w-1/4 flex justify-center">
@@ -44,7 +45,9 @@ function Sidebar({ active, setActive }: SidebarProps) {
 
 				<button
 					className={`w-full hover:bg-blue-100 rounded-md mb-1 flex flex-row p-2 ${active === "CVSCANS" ? "bg-blue-100" : ""}`}
-					onClick={() => setActive("CVSCANS")}
+					onClick={() =>
+						setSearchParams({ ...searchParams, currentTab: "CVSCANS" })
+					}
 					type="button"
 				>
 					<div className="w-1/4 flex justify-center">

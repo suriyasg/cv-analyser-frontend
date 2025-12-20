@@ -5,7 +5,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import { addToast, Button, Textarea } from "@heroui/react";
+import { addToast, Button, Input, Textarea } from "@heroui/react";
 import { useState } from "react";
 import { api } from "@/util/api";
 
@@ -22,13 +22,15 @@ export default function AddScanModal({
 	isOpen,
 	onOpenChange,
 }: AddScanModalProps) {
+	const [scanTitle, setScanTitle] = useState<string>("");
 	const [jobDes, setJobDes] = useState<string>("");
 	const handleAddScan = () => {
-		if (!cv_id || !jobDes) {
+		if (!cv_id || !jobDes || !scanTitle) {
 			return;
 		}
 		const data = {
 			cv: cv_id,
+			title: scanTitle,
 			job_description: jobDes,
 		};
 		console.log(data);
@@ -64,6 +66,13 @@ export default function AddScanModal({
 							Add New Scan to {cv_title}
 						</ModalHeader>
 						<ModalBody>
+							<Input
+								label="Scan Title"
+								onChange={(event) => {
+									setScanTitle(event.target.value);
+								}}
+								type="text"
+							/>
 							<Textarea
 								className="w-full"
 								label="Job Description"
