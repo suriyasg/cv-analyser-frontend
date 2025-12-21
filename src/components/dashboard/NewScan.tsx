@@ -3,21 +3,16 @@ import { Textarea } from "@heroui/input";
 import { Input } from "@heroui/react";
 import { addToast } from "@heroui/toast";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "@/util/api";
 import FileInput from "./FileInput";
 
-interface NewScanProps {
-	setActive: React.Dispatch<
-		React.SetStateAction<"NewScan" | "CVSCANS" | "ScanResults">
-	>;
-}
-
-function NewScan({ setActive }: NewScanProps) {
+function NewScan() {
 	const [title, setTitle] = useState<string>("");
 	const [scanTitle, setScanTitle] = useState<string>("");
 	const [file, setFile] = useState<File | undefined>(undefined);
 	const [jobDes, setJobDes] = useState<string>("");
-
+	const [searchParams, setSearchParams] = useSearchParams();
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (!event.target.files) {
 			return;
@@ -51,7 +46,7 @@ function NewScan({ setActive }: NewScanProps) {
 			.then((response) => {
 				console.log(response);
 				if (response.status === 201) {
-					setActive("CVSCANS");
+					setSearchParams({ ...searchParams, currentTab: "CVSCANS" });
 				}
 			})
 			.catch((error) => {

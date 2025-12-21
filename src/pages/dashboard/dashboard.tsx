@@ -6,10 +6,6 @@ import ScanResults from "@/components/dashboard/ScanResults";
 import Sidebar from "@/components/dashboard/Sidebar";
 
 function Dashboard() {
-	const [active, setActive] = useState<"NewScan" | "CVSCANS" | "ScanResults">(
-		"NewScan",
-	);
-
 	const [scanId, setScanId] = useState<number | undefined>();
 	const [searchParams] = useSearchParams();
 	const currentTab = searchParams.get("currentTab");
@@ -17,7 +13,7 @@ function Dashboard() {
 	return (
 		<div className="flex flex-row h-full w-full p-2">
 			<Sidebar active={currentTabEnum} />
-			{currentTabEnum === "NewScan" && <NewScan setActive={setActive} />}
+			{currentTabEnum === "NewScan" && <NewScan />}
 			{currentTabEnum === "CVSCANS" && <CVS setScanId={setScanId} />}
 			{currentTabEnum === "ScanResults" && (
 				<ScanResults scanId={scanId} setScanId={setScanId} />
