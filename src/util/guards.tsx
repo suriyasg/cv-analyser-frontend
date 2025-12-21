@@ -15,7 +15,7 @@ export const IsLoggedOutGuard = () => {
 	const auth = useAuth();
 
 	if (auth.isAuthenticated) {
-		return <Navigate to="/" />;
+		return <Navigate to="/dashboard" />;
 	}
 	return <Outlet />;
 };

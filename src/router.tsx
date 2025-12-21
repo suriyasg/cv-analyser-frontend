@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Dashboard from "./pages/dashboard/dashboard";
 import { HomePage } from "./pages/home/home-page";
 import { LoginPage } from "./pages/login/login-page";
+import { NotFound } from "./pages/NotFound/not-found-page";
 import { IsLoggedInGuard, IsLoggedOutGuard } from "./util/guards";
 
 export const router = createBrowserRouter([
@@ -11,10 +12,6 @@ export const router = createBrowserRouter([
 			{
 				path: "/auth/login",
 				element: <LoginPage />,
-			},
-			{
-				path: "/",
-				element: <HomePage />,
 			},
 		],
 	},
@@ -27,8 +24,23 @@ export const router = createBrowserRouter([
 			},
 		],
 	},
+
+	// Public routes
+	{
+		path: "/",
+		element: <HomePage />,
+	},
+	{
+		path: "/home",
+		element: <Navigate replace to="/" />,
+	},
+	{
+		path: "/page-not-found",
+		element: <NotFound />,
+	},
+	// Catch-all
 	{
 		path: "*",
-		element: <Navigate replace to="/" />,
+		element: <Navigate replace to="/page-not-found" />,
 	},
 ]);
