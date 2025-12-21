@@ -5,7 +5,8 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import { addToast, Button, Input, Textarea } from "@heroui/react";
+import { Button, Input, Textarea } from "@heroui/react";
+import { addToast } from "@heroui/toast";
 import { useState } from "react";
 import { api } from "@/util/api";
 
@@ -46,6 +47,7 @@ export default function AddScanModal({
 				}
 				addToast({
 					title: "Scan creation failed",
+					color: "danger",
 				});
 			})
 			.catch((error) => {

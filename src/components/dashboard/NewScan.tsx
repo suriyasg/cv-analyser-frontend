@@ -1,6 +1,7 @@
 import { Button } from "@heroui/button";
 import { Textarea } from "@heroui/input";
 import { Input } from "@heroui/react";
+import { addToast } from "@heroui/toast";
 import { useState } from "react";
 import { api } from "@/util/api";
 import FileInput from "./FileInput";
@@ -26,7 +27,13 @@ function NewScan({ setActive }: NewScanProps) {
 
 	const onPress = () => {
 		const formdata = new FormData();
-		if (!file || !jobDes || !title || !scanTitle) return;
+		if (!file || !jobDes || !title || !scanTitle) {
+			addToast({
+				title: "Need to provide all fields",
+				color: "danger",
+			});
+			return;
+		}
 
 		formdata.append("title", title);
 		formdata.append("scan_title", scanTitle);
