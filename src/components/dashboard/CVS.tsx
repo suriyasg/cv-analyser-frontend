@@ -213,7 +213,7 @@ function CVS({ setScanId }: CVSProps) {
 					onPress={() => {
 						const currentPage = searchParams.get("page")
 							? Number(searchParams.get("page"))
-							: 0;
+							: 1;
 						setSearchParams({
 							...searchParams,
 							currentTab: "CVSCANS",
