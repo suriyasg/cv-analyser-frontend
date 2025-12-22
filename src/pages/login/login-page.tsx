@@ -1,4 +1,5 @@
 import { Button } from "@heroui/react";
+import { addToast } from "@heroui/toast";
 import { useState } from "react";
 import { email, z } from "zod";
 import loginBg from "@/assets/login-bg.jpg";
@@ -40,8 +41,12 @@ export const LoginPage = () => {
 					useAuthStore.getState().setAuth(response.data.access);
 					useAuthStore.getState().setRefresh(response.data.refresh);
 				})
-				.catch((error) => {
-					console.log(error);
+				.catch(() => {
+					addToast({
+						title: "Error",
+						description: "Error while loggin in",
+						color: "danger",
+					});
 				});
 		},
 	});

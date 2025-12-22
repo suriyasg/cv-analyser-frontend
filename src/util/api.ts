@@ -22,26 +22,34 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
 	(response) => response,
-	(error) => {
+	async (error) => {
+		const originalRequest = error.config;
 		if (error.response?.status === 401) {
 			// if access token error try to refresh it
-			if (error.response.data.errors[0].code === "token_not_valid") {
-				const token = useAuthStore.getState().token;
-				const refresh = useAuthStore.getState().refresh;
-				api
-					.post("/api/v1/auth/token/refresh/", {
-						access: token,
-						refresh,
-					})
-					.then((response) => {
-						useAuthStore.getState().setAuth(response.data.access);
-					})
-					.catch(() => {
-						// refreshing the token is also result in error log out user and make them log in again
-						// console.log(error);
-						useAuthStore.getState().logout();
-						window.location.href = "/login";
-					});
+			// if original request was made to access blob or other content type we won't get
+			// nice json to access data.errors[0] we will have to parse it so we are skipping that check
+			// if (error.response.data.errors[0].code === "token_not_valid")
+			const token = useAuthStore.getState().token;
+			const refresh = useAuthStore.getState().refresh;
+
+			// using axios instead of api (axios instance we created) to avoid loops
+			// /api appended for vite proxy to redirect to django
+			const response = await axios.post("/api/api/v1/auth/token/refresh/", {
+				access: token,
+				refresh,
+			});
+			if (response.status === 200) {
+				useAuthStore.getState().setAuth(response.data.access);
+				originalRequest.headers = {
+					...originalRequest.headers,
+					Authorization: `Bearer ${response.data.access}`,
+				};
+				const res = await axios.request(originalRequest);
+				return res;
+			} else {
+				// refreshing the token is also result in error log out user and make them log in again
+				useAuthStore.getState().logout();
+				window.location.href = "/login";
 			}
 		}
 		return Promise.reject(error);

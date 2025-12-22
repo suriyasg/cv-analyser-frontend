@@ -25,7 +25,7 @@ export default function AddScanModal({
 }: AddScanModalProps) {
 	const [scanTitle, setScanTitle] = useState<string>("");
 	const [jobDes, setJobDes] = useState<string>("");
-	const handleAddScan = () => {
+	const handleAddScan = (onClose: () => void) => {
 		if (!cv_id || !jobDes || !scanTitle) {
 			return;
 		}
@@ -34,27 +34,27 @@ export default function AddScanModal({
 			title: scanTitle,
 			job_description: jobDes,
 		};
-		console.log(data);
 		api
 			.post("/scans/", data)
 			.then((res) => {
-				console.log(res);
 				if (res.status === 201) {
 					addToast({
 						title: "Scan Created",
 						color: "success",
 					});
+					onClose();
+				} else {
+					addToast({
+						title: "Scan creation failed",
+						description: "Scan creation failed",
+						color: "danger",
+					});
 				}
-				addToast({
-					title: "Scan creation failed",
-					color: "danger",
-				});
 			})
-			.catch((error) => {
-				console.log("error", error);
+			.catch((error: Error) => {
 				addToast({
 					title: "Error",
-					description: "Scan creation failed",
+					description: error.message,
 					color: "danger",
 				});
 			});
@@ -80,7 +80,6 @@ export default function AddScanModal({
 								label="Job Description"
 								onChange={(event) => {
 									setJobDes(event.target.value);
-									console.log(event.target.value);
 								}}
 								placeholder="Enter your target job description"
 							/>
@@ -92,8 +91,7 @@ export default function AddScanModal({
 							<Button
 								color="primary"
 								onPress={() => {
-									handleAddScan();
-									onClose();
+									handleAddScan(onClose);
 								}}
 							>
 								Add Scan
