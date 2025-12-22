@@ -4,7 +4,6 @@ import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { dummyCVScans } from "@/dummy_data";
 import { api } from "@/util/api";
 import CVViewer from "./CVViewer";
 
@@ -89,7 +88,6 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 
 	useEffect(() => {
 		if (!scanId) return;
-		// setScan(dummyCVScans[scanId - 1]);
 		api
 			.get(`/scans/${scanId}`)
 			.then((response) => {

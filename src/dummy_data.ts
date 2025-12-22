@@ -1,4 +1,3 @@
-import { id } from "zod/locales";
 import type { CV, CVScan } from "./components/dashboard/ScanResults";
 
 export const dummyCV: CV = {
@@ -11,11 +10,13 @@ export const dummyCV: CV = {
 	scans: [
 		{
 			id: 1,
+			title: "untitled Scan 1",
 			scan_status: "FINISHED",
 			created: new Date("2024-11-01T10:15:00Z"),
 		},
 		{
 			id: 2,
+			title: "untitled Scan 1",
 			scan_status: "FINISHED",
 			created: new Date("2024-11-01T10:15:00Z"),
 		},
@@ -25,7 +26,7 @@ export const dummyCV: CV = {
 export const dummyCVScans: CVScan[] = [
 	{
 		id: 1,
-
+		title: "untitled Scan 1",
 		cv: dummyCV,
 
 		job_description: `
@@ -143,7 +144,7 @@ We are looking for a **Backend Developer** to design, build, and maintain scalab
 	},
 	{
 		id: 2,
-
+		title: "untitled Scan 2",
 		cv: dummyCV,
 
 		job_description: `
