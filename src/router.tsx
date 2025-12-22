@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import CVPDFPage from "./pages/cvpdf/cv-pdf-page";
 import Dashboard from "./pages/dashboard/dashboard";
 import { HomePage } from "./pages/home/home-page";
 import { LoginPage } from "./pages/login/login-page";
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/dashboard",
 				element: <Dashboard />,
+			},
+			{
+				path: "/media/uploads/*",
+				element: <CVPDFPage />,
 			},
 		],
 	},
