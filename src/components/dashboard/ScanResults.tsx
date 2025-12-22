@@ -5,6 +5,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { dummyCVScans } from "@/dummy_data";
 import { api } from "@/util/api";
+import CVViewer from "./CVViewer";
 
 export interface CVScan {
 	id: number;
@@ -308,24 +309,16 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 						Job Description Extracts
 					</Button>
 				</div>
-				{activeScanInputTab === "PDF" && (
-					<div className="w-full p-2" id="cv-file">
-						<object
-							className="h-screen"
-							data="http://localhost:5173/api/media/uploads/Suriya_Gnanamoorthy_Dy3kDRF.pdf"
-							height="100%"
-							type="application/pdf"
-							width="100%"
-						>
-							<p>
-								Alternative text - include a link{" "}
-								<a href="http://localhost:8000/media/uploads/Suriya_Gnanamoorthy_Dy3kDRF.pdf">
-									to the PDF!
-								</a>
-							</p>
-						</object>
-					</div>
-				)}
+				{activeScanInputTab === "PDF" &&
+					(scan?.cv.file ? (
+						<div className="w-full p-2" id="cv-file">
+							<CVViewer url={`${scan?.cv.file}`} />
+						</div>
+					) : (
+						<div className="w-full p-2" id="cv-file">
+							no file available
+						</div>
+					))}
 
 				{activeScanInputTab === "JOBDESC" && (
 					<div className="w-full" id="job-description">
