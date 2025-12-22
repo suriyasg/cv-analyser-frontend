@@ -1,3 +1,4 @@
+import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 import { api } from "@/util/api";
 
@@ -11,8 +12,12 @@ function CVViewer({ url }: { url: string }) {
 				const objectUrl = URL.createObjectURL(blob);
 				setPdfUrl(objectUrl);
 			})
-			.catch((err) => {
-				console.error("Failed to load PDF", err);
+			.catch(() => {
+				addToast({
+					title: "Error",
+					description: "Failed to load CV PDF",
+					color: "danger",
+				});
 			});
 	}, [url]);
 

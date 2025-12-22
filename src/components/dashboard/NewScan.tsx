@@ -34,9 +34,6 @@ function NewScan() {
 		formdata.append("scan_title", scanTitle);
 		formdata.append("file", file);
 		formdata.append("job_description", jobDes);
-		console.log(title);
-		console.log(file);
-		console.log(jobDes);
 		api
 			.post("/cvs/", formdata, {
 				headers: {
@@ -44,13 +41,22 @@ function NewScan() {
 				},
 			})
 			.then((response) => {
-				console.log(response);
 				if (response.status === 201) {
 					setSearchParams({ ...searchParams, currentTab: "CVSCANS" });
+				} else {
+					addToast({
+						title: "Error",
+						description: "unknown error",
+						color: "danger",
+					});
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				addToast({
+					title: "Error while creating scan",
+					description: error.response.data.errors[0].detail,
+					color: "danger",
+				});
 			});
 	};
 

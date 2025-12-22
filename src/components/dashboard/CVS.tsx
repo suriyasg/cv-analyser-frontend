@@ -1,5 +1,6 @@
 import { Button, useDisclosure } from "@heroui/react";
 import { Select, SelectItem } from "@heroui/select";
+import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "@/util/api";
@@ -55,13 +56,16 @@ function CVS({ setScanId }: CVSProps) {
 		api
 			.get(url)
 			.then((response) => {
-				// console.log(response.data);
 				setCVs(response.data.results);
 				setNext(!!response.data.next);
 				setPrevious(!!response.data.previous);
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch((error: Error) => {
+				addToast({
+					title: "Error",
+					description: error.message || "Error occured while fetching CVs",
+					color: "danger",
+				});
 			});
 	}, [searchParams, pageSize]);
 	return (

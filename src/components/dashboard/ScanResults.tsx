@@ -1,5 +1,6 @@
 import { Button } from "@heroui/button";
 import { Progress } from "@heroui/progress";
+import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -92,11 +93,14 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 		api
 			.get(`/scans/${scanId}`)
 			.then((response) => {
-				console.log(response.data);
 				setScan(response.data);
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch((error: Error) => {
+				addToast({
+					title: "Error",
+					description: error.message || "Error while fetching scan results",
+					color: "danger",
+				});
 			});
 	}, [scanId]);
 	return (
