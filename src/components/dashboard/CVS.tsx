@@ -9,7 +9,7 @@ import AddScanModal from "./AddScanModal";
 interface CVWithScans {
 	id: number;
 	title: string;
-	file: string;
+	file_url: string;
 	owner_id: number;
 	created: Date;
 	modified: Date;
@@ -94,7 +94,7 @@ function CVS({ setScanId }: CVSProps) {
 									<Link
 										className="italic text-blue-500 underline hover:text-blue-700"
 										target="_blank"
-										to={{ pathname: cv.file }}
+										to={{ pathname: cv.file_url }}
 									>
 										<svg
 											aria-hidden="true"

@@ -61,7 +61,7 @@ export interface CVScan {
 export interface CV {
 	id: number;
 	title: string;
-	file: string;
+	file_url: string;
 	owner_id: number;
 	created: Date;
 	modified: Date;
@@ -323,9 +323,9 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 							</Button>
 						</div>
 						{activeScanInputTab === "PDF" &&
-							(scan?.cv.file ? (
+							(scan?.cv.file_url ? (
 								<div className="w-full p-2" id="cv-file">
-									<CVViewer url={`${scan?.cv.file}`} />
+									<CVViewer url={`${scan?.cv.file_url}`} />
 								</div>
 							) : (
 								<div className="w-full p-2" id="cv-file">

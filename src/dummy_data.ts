@@ -3,7 +3,7 @@ import type { CV, CVScan } from "./components/dashboard/ScanResults";
 export const dummyCV: CV = {
 	id: 1,
 	title: "Senior Backend Developer CV",
-	file: "/media/uploads/senior_backend_dev.pdf",
+	file_url: "/media/uploads/senior_backend_dev.pdf",
 	owner_id: 1,
 	created: new Date("2024-11-01T10:15:00Z"),
 	modified: new Date("2024-11-15T08:30:00Z"),
