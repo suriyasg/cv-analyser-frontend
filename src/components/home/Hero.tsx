@@ -1,5 +1,3 @@
-import React from "react";
-
 function Hero() {
 	return (
 		<div className="flex flex-row w-full h-72 mt-6" id="hero">

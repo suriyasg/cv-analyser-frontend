@@ -1,10 +1,10 @@
 import { Button } from "@heroui/react";
 import { addToast } from "@heroui/toast";
 import { useState } from "react";
-import { email, z } from "zod";
+import { z } from "zod";
 import loginBg from "@/assets/login-bg.jpg";
 import { api } from "@/util/api";
-import { useAuth, useAuthStore } from "@/util/auth";
+import { useAuthStore } from "@/util/auth";
 import { useAppForm } from "@/util/form";
 
 const loginSchema = z.object({
@@ -37,7 +37,6 @@ export const LoginPage = () => {
 					password: value.password,
 				})
 				.then((response) => {
-					// setAuth(response.data.access);
 					useAuthStore.getState().setAuth(response.data.access);
 					useAuthStore.getState().setRefresh(response.data.refresh);
 				})
