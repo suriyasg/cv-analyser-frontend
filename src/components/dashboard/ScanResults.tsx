@@ -3,6 +3,7 @@ import { Progress } from "@heroui/progress";
 import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
+import { useSearchParams } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import { api } from "@/util/api";
 import CVViewer from "./CVViewer";
@@ -75,13 +76,10 @@ export interface PartialScan {
 	scan_status: "PENDING" | "STARTED" | "PROCESSING" | "FINISHED";
 }
 
-interface ScanResultsProps {
-	scanId: number | undefined;
-	setScanId: React.Dispatch<React.SetStateAction<number | undefined>>;
-}
-
-function ScanResults({ scanId, setScanId }: ScanResultsProps) {
+function ScanResults() {
 	const [scan, setScan] = useState<CVScan | undefined>();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const scanId = searchParams.get("scanId");
 	const [activeScanInputTab, setActiveScanInputTab] = useState<
 		"PDF" | "EXTRACTED_CV_TEXT" | "JOBDESC" | "JOBDESC_EXTRACTS"
 	>("PDF");
@@ -103,7 +101,7 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 	}, [scanId]);
 
 	return (
-		<div className="w-full p-2">
+		<div className="w-full p-2 h-screen overflow-y-scroll">
 			<div className="p-6" id="header">
 				<h1 className="text-black dark:text-white text-3xl lg:text-2xl font-black leading-tight tracking-[-0.033em]">
 					Scan Results
@@ -441,10 +439,14 @@ function ScanResults({ scanId, setScanId }: ScanResultsProps) {
 								return (
 									<div key={scan.id}>
 										<button
-											className={`p-2 ${scanId === scan.id ? "bg-blue-400" : "bg-blue-200"} rounded-lg `}
-											disabled={scanId === scan.id}
+											className={`p-2 ${scanId === String(scan.id) ? "bg-blue-400" : "bg-blue-200"} rounded-lg `}
+											disabled={scanId === String(scan.id)}
 											onClick={() => {
-												setScanId(scan.id);
+												setSearchParams({
+													...searchParams,
+													scanId: String(scan.id),
+													currentTab: "ScanResults",
+												});
 												window.scrollTo({ top: 0 });
 											}}
 											type="button"
