@@ -9,7 +9,7 @@ interface SidebarProps {
 function Sidebar({ active }: SidebarProps) {
 	const [searchParams, setSearchParams] = useSearchParams();
 	return (
-		<div className="bg-gray-50 w-1/6 h-screen overflow-y-auto flex flex-col pr-2">
+		<div className="p-2 bg-gray-50 w-1/6 h-screen overflow-y-auto flex flex-col pr-2">
 			<div className="mb-6" id="header">
 				<h1 className="text-black dark:text-white text-3xl lg:text-2xl font-black leading-tight tracking-[-0.033em]">
 					CV Analyser
